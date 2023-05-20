@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container_form">
+        <h1>Поиск вакансий</h1>
+        <input id="search" size="27" placeholder="Введите название вакансии" onchange="search()">
+        <div id="resultSearch" class="resultSearch"></div>
+    
+    </div>
+    <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+    <script>
+        function search() {
+            const result = document.getElementById("resultSearch")
+            result.innerHTML = ""
+            axios.get(`https://api.hh.ru/vacancies?text=${document.getElementById("search").value}`)
+                .then(function (response) {
+                    // обработка успешного запроса
+                    response.data.items.map((item,index) => {
+                        let div = document.createElement('div');
+                        div.innerHTML = `${index+1}. ${item.name}` 
+                        result.append(div)
+                    })
+                    console.log(result)
+                    console.log(response.data.items)
+                })
+                .catch(function (error) {
+                    // обработка ошибки
+                    let div = document.createElement('div');
+                    div.innerHTML = `Ошибка при получении данных` 
+                    console.log(error);
+                })
+        }
+    </script>
+</body>
+
+</html>
